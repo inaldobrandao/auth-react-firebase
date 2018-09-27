@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Dashboard from './containers/dashboard/Dashboard';
 import logo from './logo.svg';
 import './App.css';
 
@@ -6,13 +8,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          Inaldo Brandão
-        </p>
+        <Switch>
+          <Route path="/dashboard" component={Dashboard}/>
+        </Switch>
       </div>
     );
   }
