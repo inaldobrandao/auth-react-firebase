@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { Button } from '@material-ui/core';
+import FirebaseAuthService from '../../services/FirebaseAuthService';
 
 class Dashboard extends Component {
 
@@ -6,11 +8,22 @@ class Dashboard extends Component {
         super(props);
     }
 
+    signOut = () =>{
+        FirebaseAuthService.signOut(this.signOutSuccess);        
+    }
+
+    signOutSuccess = (response) => {
+        if(response){
+            console.log('sucesso logout')
+            this.props.history.push("/");
+        }
+    }
+
     render(){
 
         return(
             <div>
-                Dashboard
+                <Button onClick={this.signOut}>Sair</Button>
             </div>
         );
     }

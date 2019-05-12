@@ -1,0 +1,111 @@
+.auth {
+  width: 100%;
+  height: 100%; }
+  .auth .auth-content {
+    width: 500px;
+    height: 500px;
+    margin: 50px auto;
+    background-color: #fff;
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+    border-radius: 6px; }
+  .auth .btn-submit {
+    background-color: #3350B9;
+    background: linear-gradient(to right, #3350B9, #0076BE);
+    color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 70px;
+    padding-right: 70px;
+    border-radius: 30px;
+    position: absolute;
+    bottom: 0; }
+    .auth .btn-submit.submit-login {
+      bottom: 30px; }
+    .auth .btn-submit:disabled {
+      background: #9E9E9E;
+      cursor: not-allowed; }
+  .auth .errors {
+    width: 100%;
+    margin-bottom: 0px;
+    color: #f95c3c;
+    border-radius: 3px; }
+  .auth form {
+    width: 100%;
+    height: 270px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .auth form .text-field, .auth form .submit-line {
+      width: 80%;
+      margin-bottom: 5px; }
+      .auth form .text-field > div, .auth form .submit-line > div {
+        width: 100%; }
+  .auth .password-icon {
+    position: absolute;
+    line-height: 3;
+    right: 0;
+    z-index: 10;
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.54);
+    cursor: pointer; }
+  .auth .grid-list {
+    width: 80%;
+    display: flex;
+    margin: 0 auto;
+    padding-top: 60px; }
+  .auth .facebook-span {
+    display: table-row;
+    margin: 20px auto;
+    margin-top: 5px;
+    width: 170px;
+    height: 45px;
+    background-color: #3350B9;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    border-radius: 30px;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); }
+  .auth .facebook-btn {
+    background-color: #3350B9;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    vertical-align: -webkit-baseline-middle;
+    width: 170px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .auth .facebook-svg {
+    width: 25px; }
+  .auth .facebook-span-text {
+    margin-left: 10px; }
+  .auth .google-span {
+    display: table-row;
+    margin: 20px auto;
+    margin-top: 5px;
+    width: 170px;
+    height: 45px;
+    background-color: #fff;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    border-radius: 30px;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); }
+  .auth .google-btn {
+    background-color: #fff;
+    border: 0;
+    color: #1d1d1d;
+    cursor: pointer;
+    width: 170px;
+    font-weight: bold;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .auth .google-svg {
+    width: 24px;
+    height: 24px; }
+  .auth .google-span-text {
+    margin-left: 10px; }
