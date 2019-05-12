@@ -12,18 +12,16 @@ class FirebaseAuthService {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                console.log(errorCode)
-                console.log(errorMessage)
+                console.error(errorCode)
+                console.error(errorMessage)
             });
     }
     
    static verifyLogged(){
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
-                console.log('logged')
                 localStorage.setItem("logged", "true")
             } else {
-                console.log('user not logged')
                 localStorage.setItem("logged", "false")
             }
           });
@@ -36,7 +34,6 @@ class FirebaseAuthService {
     static login(user, callbackSuccess){
         firebase.auth().signInWithEmailAndPassword(user.userName, user.password)
             .then(user => {
-                console.log(user)
                 localStorage.setItem("logged", "true")
                 callbackSuccess(user)
             })
@@ -44,8 +41,8 @@ class FirebaseAuthService {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                console.log(errorCode);
-                console.log(errorMessage);
+                console.error(errorCode);
+                console.error(errorMessage);
             });
     }
 
@@ -71,11 +68,7 @@ class FirebaseAuthService {
 
         firebase.auth().signInWithPopup(providerAuth)
             .then(function(result) {
-                console.log(result)    
-                let token = result.credential.accessToken;        
-                console.log(token)
                 let user = result.user;
-                console.log(user)
                 callbackSuccess();
             })
             .catch(err => {

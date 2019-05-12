@@ -45,12 +45,10 @@ class Login extends Component {
 
     handleSubmit = (values) => {
         localStorage.clear();
-        console.log(values);
         FirebaseAuthService.login(values, this.successLogin)
     }
 
     successLogin = (user) => {
-        console.log('usuario logado sucesso')
         this.props.history.push('/')
     }
 

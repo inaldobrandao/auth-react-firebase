@@ -14,7 +14,6 @@ class Dashboard extends Component {
 
     signOutSuccess = (response) => {
         if(response){
-            console.log('sucesso logout')
             this.props.history.push("/");
         }
     }

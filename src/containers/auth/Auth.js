@@ -18,7 +18,6 @@ class Auth extends Component {
     componentWillMount(){
         FirebaseAuthService.verifyLogged();
         if(localStorage.getItem("logged") === "true"){
-            console.log('entrou')
             this.props.history.push("/");
         }
     }
@@ -32,20 +31,18 @@ class Auth extends Component {
     }
 
     authGoogle = () => {
-        console.log('google')
         FirebaseAuthService.authExternal("google", this.successAuth)
+    }
+    
+    authFacebook = () => {
+        FirebaseAuthService.authExternal("facebook", this.successAuth)
     }
 
     successAuth = () => {
         localStorage.setItem("logged", "true")
         this.props.history.push("/");
-        console.log('sucesso google')
     }
 
-    authFacebook = () => {
-        console.log('facebook')
-        FirebaseAuthService.authExternal("facebook", this.successAuth)
-    }
 
     render(){
         const { showLogin } = this.state;
