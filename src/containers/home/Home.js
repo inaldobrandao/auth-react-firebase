@@ -8,6 +8,22 @@ class Home extends Component {
         super(props);
     }
 
+    componentWillMount(){
+        this.verifyToken();
+    }
+
+    verifyToken(uriRedirect = undefined) {
+        const logged = localStorage.getItem("logged");
+        if (!logged) {
+          if (uriRedirect !== undefined)
+            this.props.history.push("/auth", { uriRedirect: uriRedirect });
+          else
+            this.props.history.push("/auth");
+        } else {
+          console.log('logado na home');
+        }
+    }
+
     render() {
         return (
             <Switch>

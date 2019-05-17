@@ -16,7 +16,6 @@ class Auth extends Component {
     }
 
     componentWillMount(){
-        FirebaseAuthService.verifyLogged();
         if(localStorage.getItem("logged") === "true"){
             this.props.history.push("/");
         }

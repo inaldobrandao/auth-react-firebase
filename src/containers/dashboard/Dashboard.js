@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
         return(
             <div>
-                <Button onClick={this.signOut}>Sair</Button>
+                <Button onClick={this.signOut}>Sair</Button>                
             </div>
         );
     }

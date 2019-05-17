@@ -17,11 +17,14 @@ class FirebaseAuthService {
             });
     }
     
-   static verifyLogged(){
+   static verifyLogged(callbackSuccess){
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
+                callbackSuccess(user)
                 localStorage.setItem("logged", "true")
             } else {
+                console.log('não logado')
+                callbackSuccess(null)
                 localStorage.setItem("logged", "false")
             }
           });

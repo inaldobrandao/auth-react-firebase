@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Auth from './containers/auth/Auth';
 import firebase from 'firebase/app';
+import { connect } from 'react-redux';
 import './App.css';
 import Home from './containers/home/Home';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FirebaseAuthService from './services/FirebaseAuthService';
+import { login, logout } from './actions';
+
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -17,23 +21,48 @@ const config = {
 
 firebase.initializeApp(config);
 
-FirebaseAuthService.verifyLogged();
-
 class App extends Component {
 
+  constructor(props){
+    super(props)
+
+    this.state = {
+      userLoaded: false
+    }
+  }
+
+  componentDidMount(){
+    FirebaseAuthService.verifyLogged(this.successLoggedUser);
+  }
+
+  successLoggedUser = (user) => {
+    this.setState({userLoaded : true });
+    if(user != null){
+      this.props.login(user)
+    }else{
+      this.props.login({})
+    }
+  }
+
   render() {
+
+    const { userLoaded } = this.state;
+    console.log(userLoaded)
     return (
       <div className="App">
-        <Switch>
+        {this.props.user != null && <Switch>
           <Route path="/auth" component={Auth}/>
           <PrivateRoute path="/" exact={true} component={Home} />
-          <PrivateRoute path="/dashboard" exact={true} component={Home} />
-        </Switch>
+          <PrivateRoute path="/dashboard" exact={true} component={Home}/>
+        </Switch>        
+        }
+        {this.props.user === null && <CircularProgress />}
       </div>
     );
   }
 }
 const PrivateRoute = ({ component: Component, ...rest }) => (
+  
   <Route {...rest} render={props => (
     localStorage.getItem("logged") === "true" ? (
       <Component {...props}/>
@@ -45,5 +74,21 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )
   )}/>
 )
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (data) => dispatch(login(data))
+  }
+}
+
+App = connect(
+  mapStateToProps, mapDispatchToProps
+)(App);
 
 export default App;
