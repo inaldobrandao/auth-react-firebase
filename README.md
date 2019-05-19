@@ -1,6 +1,6 @@
 # Auth React Firebase
 
-Este projeto constiste como forma de projeto base em React ja com autênticação integrada com o Firebase. 
+Este projeto constiste como forma de projeto base em React já com autenticação integrada com o Firebase. 
 
 Estão sendo usadas as seguintes tecnologias:
 
