@@ -47,7 +47,6 @@ class App extends Component {
   render() {
 
     const { userLoaded } = this.state;
-    console.log(userLoaded)
     return (
       <div className="App">
         {this.props.user != null && <Switch>

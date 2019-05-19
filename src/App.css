@@ -22,3 +22,18 @@
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
+
+.snackbar-success > div {
+  background: #009688;
+  border-radius: 15px;
+  text-align: center; }
+
+.snackbar-error > div {
+  background: #EF5350;
+  border-radius: 15px; }
+
+.snackbar-error > div > div {
+  text-align: center;
+  margin: 0 auto;
+  align-items: center;
+  display: flex; }

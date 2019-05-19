@@ -23,7 +23,6 @@ class FirebaseAuthService {
                 callbackSuccess(user)
                 localStorage.setItem("logged", "true")
             } else {
-                console.log('não logado')
                 callbackSuccess(null)
                 localStorage.setItem("logged", "false")
             }
@@ -77,6 +76,15 @@ class FirebaseAuthService {
             .catch(err => {
                 console.error(err);
             });            
+    }
+
+    static sendEmailResetPassword(email, callback){
+        firebase.auth().sendPasswordResetEmail(email).then(function() {
+            callback(true);
+          }).catch(function(error) {
+            // An error happened.
+            callback(false);
+          });
     }
 }
 

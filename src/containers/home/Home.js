@@ -19,8 +19,6 @@ class Home extends Component {
             this.props.history.push("/auth", { uriRedirect: uriRedirect });
           else
             this.props.history.push("/auth");
-        } else {
-          console.log('logado na home');
         }
     }
 

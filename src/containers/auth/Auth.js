@@ -4,6 +4,14 @@ import Register from '../../components/register/Register';
 import "./Auth.css"
 import FirebaseAuthService from '../../services/FirebaseAuthService';
 import { Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
+import Fade from '@material-ui/core/Fade';
 
 class Auth extends Component {
     
@@ -11,7 +19,14 @@ class Auth extends Component {
         super(props);
 
         this.state = {
-            showLogin: true
+            showLogin: true,
+            openDialog: false,
+            activeDialogResetPassword: false,
+            email: "",
+            openSnackbar: false,
+            messageSnackbar: "",
+            timeSnackbar: 2000,
+            classSnackbar: ""
         }
     }
 
@@ -42,6 +57,42 @@ class Auth extends Component {
         this.props.history.push("/");
     }
 
+    resetPassword = () => {
+        this.handleClickOpenDialog();
+    }
+
+    confirmResetPassword = (email) => {
+        FirebaseAuthService.sendEmailResetPassword(email, this.resetPasswordCallback)
+    }
+
+    resetPasswordCallback = (result) => {
+        this.handleCloseDialog();
+        if(result){
+            this.handleSnackbar('Email enviado com sucesso :).', 'snackbar-success', 3000)
+        }else{            
+            this.handleSnackbar('Falha ao enviar o email :(.', 'snackbar-error', 3000)
+        }
+    }
+
+    handleClickOpenDialog = () => {
+        this.setState({ openDialog: true, activeDialogResetPassword: true });
+    };
+    
+    handleCloseDialog = () => {
+        this.setState({ openDialog: false, activeDialogResetPassword: false });
+    };
+
+    handleChangeTextField = name => event => {
+        this.setState({ [name]: event.target.value });
+    }
+
+    handleSnackbar = (message, theme, time) => {
+        this.setState({ messageSnackbar: message, classSnackbar: theme, timeSnackbar: time, openSnackbar: true })
+    }
+    
+    closeSnackbar = () => {        
+        this.setState({ openSnackbar: false, messageSnackbar: "", classSnackbar: "" })          
+    }
 
     render(){
         const { showLogin } = this.state;
@@ -63,9 +114,54 @@ class Auth extends Component {
                             </Button>
                         </span>
                     </div>
-                    { showLogin ? <Login history={this.props.history} hendleRegister={this.hendleRegister} /> 
+                    { showLogin ? <Login history={this.props.history} resetPassword={this.resetPassword} hendleRegister={this.hendleRegister} /> 
                     : <Register history={this.props.history} hendleLogin={this.hendleLogin} /> }
                 </div>
+
+                {this.state.activeDialogResetPassword &&
+                 <Dialog
+                    open={this.state.openDialog}
+                    onClose={this.handleCloseDialog}
+                    aria-labelledby="form-dialog-title"
+                    >
+                    <DialogTitle id="form-dialog-title">Recuperação de Senha</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Digite seu email para que possamos lhe enviar um link de recuperação.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="email"
+                            label="Email"
+                            type="email"
+                            fullWidth
+                            value={this.state.email}
+                            onChange={this.handleChangeTextField('email')}
+                            />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCloseDialog} color="primary">
+                            Cancelar
+                        </Button>
+                        <Button onClick={() => this.confirmResetPassword(this.state.email)} color="primary">
+                            Enviar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                }
+
+                <Snackbar
+                    className={this.state.classSnackbar}
+                    open={this.state.openSnackbar}
+                    TransitionComponent={Fade}
+                    autoHideDuration={this.state.timeSnackbar}
+                    onClose={this.closeSnackbar}
+                    ContentProps={{
+                        'aria-describedby': 'snackbar-message-id',
+                    }}
+                    message={<span id="snackbar-message-id">{this.state.messageSnackbar}</span>}
+                />
             </div>
         )
     }

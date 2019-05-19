@@ -7,24 +7,24 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FirebaseAuthService from '../../services/FirebaseAuthService';
 
 const validate = (values, props) => {
-    // const errors = {};
-    // const requiredFields = ['name', 'userName', 'password'];
-    // requiredFields.forEach(field => {
-    //   if (!values[field]) {
-    //     const Message = field === 'userName' ? "Email obrigatório"
-    //       : field === 'name' ? "Nome Obrigatório" : "Senha obrigatória";
-    //     errors[field] = Message;
-    //   }
-    // })
-    // if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    //   errors.email = "Email inválido";
-    // }
-    // if (values.password !== undefined) {
-    //   if (values['password'].length < 6) {
-    //     errors['password'] = "Deve ter no mínimo 6 caracteres.";
-    //   }
-    // }
-    // return errors;
+    const errors = {};
+    const requiredFields = ['name', 'userName', 'password'];
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        const Message = field === 'userName' ? "Email obrigatório"
+          : field === 'name' ? "Nome Obrigatório" : "Senha obrigatória";
+        errors[field] = Message;
+      }
+    })
+    if (values.userName && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.userName)) {
+      errors.userName = "Email inválido";
+    }
+    if (values.password !== undefined) {
+      if (values['password'].length < 6) {
+        errors['password'] = "Deve ter no mínimo 6 caracteres.";
+      }
+    }
+    return errors;
   }
 
 class Register extends Component {
@@ -93,7 +93,7 @@ class Register extends Component {
                       }
                   </Button>
                 </form>
-                <span onClick={this.props.hendleLogin}>Já possui uma conta? Clique aqui.</span>
+                <span className="redirect-login" onClick={this.props.hendleLogin}>Já possui uma conta? Clique aqui.</span>
             </div>
         )
     }

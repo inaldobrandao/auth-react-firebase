@@ -5,21 +5,25 @@ import SimpleTextField from '../materialComponents/SimpleTextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FirebaseAuthService from '../../services/FirebaseAuthService';
-import { Link } from 'react-router-dom';
 
 const validate = (values, props) => {
-    // const errors = {};
-    // const requiredFields = ['userName', 'password'];
-    // requiredFields.forEach(field => {
-    //   if (!values[field]) {
-    //     const idMessage = field === 'userName' ? "input.email.error.required" : "input.password.error.required";
-    //     errors[field] = props.intl.formatMessage({ id: idMessage });
-    //   }
-    // })
-    // if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    //   errors.email = props.intl.formatMessage({ id: "input.email.error.invalid" });
-    // }
-    // return errors;
+    const errors = {};
+    const requiredFields = ['userName', 'password'];
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        const Message = field === 'userName' ? "input.email.error.required" : "input.password.error.required";
+        errors[field] = Message;
+      }
+    })
+    if (values.password !== undefined) {
+        if (values['password'].length < 6) {
+          errors['password'] = "Deve ter no mínimo 6 caracteres.";
+        }
+      }
+    if (values.userName && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.userName)) {
+      errors.userName = "Email inválido";
+    }
+    return errors;
   }
 
 class Login extends Component {
@@ -79,9 +83,9 @@ class Login extends Component {
                             label="Senha"
                         />
                     </div>
-                    <Link to={"/forgot-password"} className="remerber-password">
-                        Esqueci a senha.
-                    </Link>
+                    <span onClick={this.props.resetPassword} className="reset-password">
+                        Esqueceu a senha?
+                    </span>
                     <Button type="submit" variant="contained" className="btn-submit submit-login" disabled={(pristine || submitting || !valid)}>
                         {!this.state.loadingSendLogin
                         ? "Entrar"
@@ -89,7 +93,7 @@ class Login extends Component {
                         }
                     </Button>
                 </form>
-                <span onClick={this.props.hendleRegister}>Não possui conta? Cadastre-se aqui.</span>
+                <span className="redirect-register" onClick={this.props.hendleRegister}>Não possui conta? Cadastre-se aqui.</span>
             </div>
         )
     }
