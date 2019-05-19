@@ -11,8 +11,7 @@ const validate = (values, props) => {
     const requiredFields = ['userName', 'password'];
     requiredFields.forEach(field => {
       if (!values[field]) {
-        const Message = field === 'userName' ? "input.email.error.required" : "input.password.error.required";
-        errors[field] = Message;
+        errors[field] = "Campo obrigatório";
       }
     })
     if (values.password !== undefined) {
