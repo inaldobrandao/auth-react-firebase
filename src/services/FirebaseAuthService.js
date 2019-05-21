@@ -3,17 +3,13 @@ require("firebase/auth");
 
 class FirebaseAuthService {
     
-    static createUser(user, callbackSucess) {
+    static createUser(user, callbackSucess, callbackError) {
         firebase.auth().createUserWithEmailAndPassword(user.userName, user.password)
             .then(() => {
                 callbackSucess();
             })
             .catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.error(errorCode)
-                console.error(errorMessage)
+                callbackError(error)
             });
     }
     
@@ -33,19 +29,23 @@ class FirebaseAuthService {
         return firebase.auth().currentUser;
     }
 
-    static login(user, callbackSuccess){
+    static login(user, callbackSuccess, callbackError){
         firebase.auth().signInWithEmailAndPassword(user.userName, user.password)
             .then(user => {
                 localStorage.setItem("logged", "true")
                 callbackSuccess(user)
             })
             .catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.error(errorCode);
-                console.error(errorMessage);
+                callbackError(error)                
             });
+    }
+
+    static errorCodeInvalidPassword(){
+        return "auth/wrong-password";
+    }
+
+    static errorUserExists(){
+        return "auth/email-already-in-use";
     }
 
     static signOut(callbackSuccess){
@@ -54,11 +54,10 @@ class FirebaseAuthService {
             localStorage.removeItem("logged");
         }).catch(function(error) {
             callbackSuccess(false);
-            console.error('Falha ao deslogar');
         });
     }
 
-    static authExternal(provider, callbackSuccess){
+    static authExternal(provider, callbackSuccess, callbackError){
         let providerAuth
         if(provider === "google"){
             providerAuth = new firebase.auth.GoogleAuthProvider();
@@ -71,10 +70,10 @@ class FirebaseAuthService {
         firebase.auth().signInWithPopup(providerAuth)
             .then(function(result) {
                 let user = result.user;
-                callbackSuccess();
+                callbackSuccess(user);
             })
             .catch(err => {
-                console.error(err);
+                callbackError(err)
             });            
     }
 

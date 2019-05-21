@@ -4,14 +4,14 @@ import { Field, reduxForm } from 'redux-form';
 import SimpleTextField from '../materialComponents/SimpleTextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FirebaseAuthService from '../../services/FirebaseAuthService';
 
 const validate = (values, props) => {
     const errors = {};
     const requiredFields = ['userName', 'password'];
     requiredFields.forEach(field => {
       if (!values[field]) {
-        errors[field] = "Campo obrigatório";
+        const Message = field === 'userName' ? "Email obrigatório" : "Senha obrigatória";
+        errors[field] = Message;
       }
     })
     if (values.password !== undefined) {
@@ -46,15 +46,6 @@ class Login extends Component {
         localStorage.clear();
     }
 
-    handleSubmit = (values) => {
-        localStorage.clear();
-        FirebaseAuthService.login(values, this.successLogin)
-    }
-
-    successLogin = (user) => {
-        this.props.history.push('/')
-    }
-
     renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => {
         return <SimpleTextField props={{ input, label, type, touched, error, custom }} />
     }
@@ -65,7 +56,7 @@ class Login extends Component {
         
         return(
             <div className="login">
-                <form onSubmit={handleSubmit(this.handleSubmit)}>
+                <form onSubmit={handleSubmit(this.props.handleSubmitLogin)}>
                     <Field
                         name="userName"
                         component={this.renderField}

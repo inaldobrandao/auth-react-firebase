@@ -4,7 +4,6 @@ import { Field, reduxForm } from 'redux-form';
 import SimpleTextField from '../materialComponents/SimpleTextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FirebaseAuthService from '../../services/FirebaseAuthService';
 
 const validate = (values, props) => {
     const errors = {};
@@ -16,8 +15,8 @@ const validate = (values, props) => {
         errors[field] = Message;
       }
     })
-    if (values.userName && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.userName)) {
-      errors.userName = "Email inválido";
+    if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = "Email inválido";
     }
     if (values.password !== undefined) {
       if (values['password'].length < 6) {
@@ -42,14 +41,6 @@ class Register extends Component {
       }
     }
 
-    handleSubmit = (values) => {
-        FirebaseAuthService.createUser(values, this.successRegister);
-    }
-
-    successRegister = () => {
-      this.props.history.push('/');
-    }
-
     renderField({ input, label, type, meta: { touched, error }, ...custom }) {
         return <SimpleTextField props={{ input, label, type, touched, error, custom }} />
     }
@@ -63,15 +54,13 @@ class Register extends Component {
       }
     }
 
-    
-
     render(){
         const { handleSubmit, pristine, submitting, valid } = this.props;
         const { typeInput, icone } = this.state;
 
         return(
             <div className="register">
-                <form onSubmit={handleSubmit(this.handleSubmit)}>
+                <form onSubmit={handleSubmit(this.props.handleSubmitRegister)}>
                   <Field name="name" component={this.renderField} type="text" label="Nome" />
                   <Field name="userName" component={this.renderField} type="text" label="Email" />
                   <div className="submit-line">

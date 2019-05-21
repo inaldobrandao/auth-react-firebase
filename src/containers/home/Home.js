@@ -4,10 +4,6 @@ import Dashboard from '../dashboard/Dashboard';
 
 class Home extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     componentWillMount(){
         this.verifyToken();
     }

@@ -44,17 +44,39 @@ class Auth extends Component {
         this.setState({ showLogin: false })
     }
 
+    handleSubmitLogin = (values) => {
+        localStorage.clear();
+        FirebaseAuthService.login(values, this.successLogin, this.errorLogin)
+    }
+
+    successLogin = (user) => {
+        this.props.history.push('/')
+    }
+
+    errorLogin = (error) => {
+        if(error && error.code === FirebaseAuthService.errorCodeInvalidPassword()){
+            this.handleSnackbar('Falha ao efetuar login, senha inválida :(.', 'snackbar-error', 3000)
+            return;
+        }
+        this.handleSnackbar('Falha ao efetuar login :(.', 'snackbar-error', 3000)
+    }
+
     authGoogle = () => {
-        FirebaseAuthService.authExternal("google", this.successAuth)
+        FirebaseAuthService.authExternal("google", this.successAuth, this.errorAuth)
     }
     
     authFacebook = () => {
-        FirebaseAuthService.authExternal("facebook", this.successAuth)
+        FirebaseAuthService.authExternal("facebook", this.successAuth, this.errorAuth)
     }
 
     successAuth = () => {
         localStorage.setItem("logged", "true")
         this.props.history.push("/");
+    }
+
+    errorAuth = (error) => {
+        console.error(error)
+        this.handleSnackbar('Falha ao efetuar login :(.', 'snackbar-error', 3000)
     }
 
     resetPassword = () => {
@@ -94,6 +116,23 @@ class Auth extends Component {
         this.setState({ openSnackbar: false, messageSnackbar: "", classSnackbar: "" })          
     }
 
+    handleSubmitRegister = (values) => {
+        FirebaseAuthService.createUser(values, this.successRegister, this.errorRegister);
+    }
+
+    successRegister = () => {
+      this.props.history.push('/');
+    }
+
+    errorRegister = (error) => {
+        console.error(error)
+        if(error && error.code === FirebaseAuthService.errorUserExists()){
+            this.handleSnackbar('Usuário já cadastrado :(.', 'snackbar-error', 3000);
+            return;
+        }
+        this.handleSnackbar('Falha ao efetuar registro :(.', 'snackbar-error', 3000)
+    }
+
     render(){
         const { showLogin } = this.state;
 
@@ -114,8 +153,15 @@ class Auth extends Component {
                             </Button>
                         </span>
                     </div>
-                    { showLogin ? <Login history={this.props.history} resetPassword={this.resetPassword} hendleRegister={this.hendleRegister} /> 
-                    : <Register history={this.props.history} hendleLogin={this.hendleLogin} /> }
+                    { showLogin ? <Login 
+                                    history={this.props.history} 
+                                    resetPassword={this.resetPassword} 
+                                    hendleRegister={this.hendleRegister}
+                                    handleSubmitLogin={this.handleSubmitLogin} /> 
+                    : <Register 
+                        history={this.props.history} 
+                        handleSubmitRegister={this.handleSubmitRegister} 
+                        hendleLogin={this.hendleLogin} /> }
                 </div>
 
                 {this.state.activeDialogResetPassword &&

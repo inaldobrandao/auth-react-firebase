@@ -7,7 +7,7 @@ import './App.css';
 import Home from './containers/home/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FirebaseAuthService from './services/FirebaseAuthService';
-import { login, logout } from './actions';
+import { login } from './actions';
 
 
 const config = {
@@ -23,14 +23,6 @@ firebase.initializeApp(config);
 
 class App extends Component {
 
-  constructor(props){
-    super(props)
-
-    this.state = {
-      userLoaded: false
-    }
-  }
-
   componentDidMount(){
     FirebaseAuthService.verifyLogged(this.successLoggedUser);
   }
@@ -45,8 +37,7 @@ class App extends Component {
   }
 
   render() {
-
-    const { userLoaded } = this.state;
+    
     return (
       <div className="App">
         {this.props.user != null && <Switch>
