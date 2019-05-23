@@ -19,8 +19,8 @@
     border-radius: 30px;
     position: absolute;
     bottom: 0; }
-    .auth .btn-submit.submit-login {
-      bottom: 30px; }
+    .auth .btn-submit.submit-signIn {
+      bottom: 20px; }
     .auth .btn-submit:disabled {
       background: #9E9E9E;
       cursor: not-allowed; }

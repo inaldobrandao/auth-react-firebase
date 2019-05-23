@@ -1,8 +1,8 @@
-.login {
-  padding-top: 15px; }
-  .login .redirect-register {
+.signIn {
+  padding-top: 10px; }
+  .signIn .redirect-signUp {
     cursor: pointer; }
-  .login .reset-password {
+  .signIn .reset-password {
     font-size: 0.875em;
     margin-top: 30px;
     text-decoration: none;

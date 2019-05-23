@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
-import Login from '../../components/login/Login';
-import Register from '../../components/register/Register';
+import SignIn from '../../components/signIn/SignIn';
+import SignUp from '../../components/signUp/SignUp';
 import "./Auth.css"
 import FirebaseAuthService from '../../services/FirebaseAuthService';
 import { Button } from '@material-ui/core';
@@ -12,6 +12,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Snackbar from '@material-ui/core/Snackbar';
 import Fade from '@material-ui/core/Fade';
+import User from '../../domain/User';
+import FirestoreUserService from '../../services/FirestoreUserService';
 
 class Auth extends Component {
     
@@ -19,14 +21,17 @@ class Auth extends Component {
         super(props);
 
         this.state = {
-            showLogin: true,
+            showSignIn: false,
             openDialog: false,
             activeDialogResetPassword: false,
             email: "",
             openSnackbar: false,
             messageSnackbar: "",
             timeSnackbar: 2000,
-            classSnackbar: ""
+            classSnackbar: "",
+            loadingSendSignUp: false,
+            disabled: false,
+            loadingSendSignIn: false
         }
     }
 
@@ -36,24 +41,26 @@ class Auth extends Component {
         }
     }
 
-    hendleLogin = () => {
-        this.setState({ showLogin: true })
+    hendleSignIn= () => {
+        this.setState({ showSignIn: true })
     }
 
-    hendleRegister = () => {
-        this.setState({ showLogin: false })
+    hendleSignUp = () => {
+        this.setState({ showSignIn: false })
     }
 
-    handleSubmitLogin = (values) => {
+    handleSubmitSignIn = (values) => {
+        this.setState({ loadingSendSignIn: true })
         localStorage.clear();
-        FirebaseAuthService.login(values, this.successLogin, this.errorLogin)
+        FirebaseAuthService.signIn(values, this.successSignIn, this.errorSignIn)
     }
 
-    successLogin = (user) => {
+    successSignIn = (user) => {
         this.props.history.push('/')
     }
 
-    errorLogin = (error) => {
+    errorSignIn = (error) => {
+        this.setState({ loadingSendSignIn: false })
         if(error && error.code === FirebaseAuthService.errorCodeInvalidPassword()){
             this.handleSnackbar('Falha ao efetuar login, senha inválida :(.', 'snackbar-error', 3000)
             return;
@@ -116,15 +123,24 @@ class Auth extends Component {
         this.setState({ openSnackbar: false, messageSnackbar: "", classSnackbar: "" })          
     }
 
-    handleSubmitRegister = (values) => {
-        FirebaseAuthService.createUser(values, this.successRegister, this.errorRegister);
+    handleSubmitSignUp = (values) => {
+        this.setState({ disabled: true, loadingSendSignUp: true });
+        FirebaseAuthService.createUser(values, this.successSignUp, this.errorSignUp);
     }
 
-    successRegister = () => {
-      this.props.history.push('/');
+    successSignUp = (result) => {        
+        let user = new User(result.name, result.userName);
+
+        new FirestoreUserService()
+            .createUser(user)
+            .then(() => {
+                this.props.history.push('/');                
+            })
+            .catch(err => console.error(err))
     }
 
-    errorRegister = (error) => {
+    errorSignUp = (error) => {
+        this.setState({ disabled: false, loadingSendSignUp: false });
         console.error(error)
         if(error && error.code === FirebaseAuthService.errorUserExists()){
             this.handleSnackbar('Usuário já cadastrado :(.', 'snackbar-error', 3000);
@@ -134,7 +150,7 @@ class Auth extends Component {
     }
 
     render(){
-        const { showLogin } = this.state;
+        const { showSignIn } = this.state;
 
         return(
             <div className="auth">
@@ -153,15 +169,18 @@ class Auth extends Component {
                             </Button>
                         </span>
                     </div>
-                    { showLogin ? <Login 
+                    { showSignIn ? <SignIn 
                                     history={this.props.history} 
                                     resetPassword={this.resetPassword} 
-                                    hendleRegister={this.hendleRegister}
-                                    handleSubmitLogin={this.handleSubmitLogin} /> 
-                    : <Register 
+                                    hendleSignUp={this.hendleSignUp}
+                                    handleSubmitSignIn={this.handleSubmitSignIn}
+                                    loadingSendSignIn={this.state.loadingSendSignIn} /> 
+                    : <SignUp 
                         history={this.props.history} 
-                        handleSubmitRegister={this.handleSubmitRegister} 
-                        hendleLogin={this.hendleLogin} /> }
+                        handleSubmitSignUp={this.handleSubmitSignUp} 
+                        hendleSignIn={this.hendleSignIn}
+                        loadingSendSignUp={this.state.loadingSendSignUp}
+                        disabled={this.state.disabled} /> }
                 </div>
 
                 {this.state.activeDialogResetPassword &&

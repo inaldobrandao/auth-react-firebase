@@ -5,8 +5,8 @@ class FirebaseAuthService {
     
     static createUser(user, callbackSucess, callbackError) {
         firebase.auth().createUserWithEmailAndPassword(user.userName, user.password)
-            .then(() => {
-                callbackSucess();
+            .then(u => {
+                callbackSucess(user);
             })
             .catch(function(error) {
                 callbackError(error)
@@ -29,7 +29,7 @@ class FirebaseAuthService {
         return firebase.auth().currentUser;
     }
 
-    static login(user, callbackSuccess, callbackError){
+    static signIn(user, callbackSuccess, callbackError){
         firebase.auth().signInWithEmailAndPassword(user.userName, user.password)
             .then(user => {
                 localStorage.setItem("logged", "true")

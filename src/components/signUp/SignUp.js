@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Register.css";
+import "./SignUp.css";
 import { Field, reduxForm } from 'redux-form';
 import SimpleTextField from '../materialComponents/SimpleTextField';
 import Button from '@material-ui/core/Button';
@@ -26,7 +26,7 @@ const validate = (values, props) => {
     return errors;
   }
 
-class Register extends Component {
+class SignUp extends Component {
 
     constructor(props) {
       super(props);
@@ -35,8 +35,7 @@ class Register extends Component {
         typeInputState: true,
         icone: 'eye-outline',
         errorSubmiting: false,
-        messageError: '',
-        loadingSendRegister: false,
+        messageError: '',        
         valuesForm: []        
       }
     }
@@ -55,12 +54,12 @@ class Register extends Component {
     }
 
     render(){
-        const { handleSubmit, pristine, submitting, valid } = this.props;
+        const { handleSubmit, disabled, loadingSendSignUp, hendleSignIn, pristine, submitting, valid } = this.props;
         const { typeInput, icone } = this.state;
 
         return(
-            <div className="register">
-                <form onSubmit={handleSubmit(this.props.handleSubmitRegister)}>
+            <div className="signUp">
+                <form onSubmit={handleSubmit(this.props.handleSubmitSignUp)}>
                   <Field name="name" component={this.renderField} type="text" label="Nome" />
                   <Field name="userName" component={this.renderField} type="text" label="Email" />
                   <div className="submit-line">
@@ -75,20 +74,20 @@ class Register extends Component {
                   </div>
 
                   <Button type="submit" variant="contained" className="btn-submit" id="btn-submit"
-                      disabled={(pristine || submitting || !valid)}>
-                      {!this.state.loadingSendRegister
+                      disabled={(disabled || pristine || submitting || !valid)}>
+                      {!loadingSendSignUp
                       ? "Cadastrar"
                       : <CircularProgress className="loading-send" size={20} />
                       }
                   </Button>
                 </form>
-                <span className="redirect-login" onClick={this.props.hendleLogin}>Já possui uma conta? Clique aqui.</span>
+                <span className="redirect-signIn" onClick={hendleSignIn}>Já possui uma conta? Clique aqui.</span>
             </div>
         )
     }
 }
 
 export default reduxForm({
-    form: 'RegisterForm',
+    form: 'SignUpForm',
     validate
-})(Register);
+})(SignUp);

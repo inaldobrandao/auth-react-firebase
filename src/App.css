@@ -23,6 +23,9 @@
   to {
     transform: rotate(360deg); } }
 
+.btn-submit .loading-send {
+  color: #fff; }
+
 .snackbar-success > div {
   background: #009688;
   border-radius: 15px;
@@ -33,6 +36,12 @@
   border-radius: 15px; }
 
 .snackbar-error > div > div {
+  text-align: center;
+  margin: 0 auto;
+  align-items: center;
+  display: flex; }
+
+.snackbar-success > div > div {
   text-align: center;
   margin: 0 auto;
   align-items: center;

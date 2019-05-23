@@ -7,7 +7,7 @@ import './App.css';
 import Home from './containers/home/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FirebaseAuthService from './services/FirebaseAuthService';
-import { login } from './actions';
+import { signIn } from './actions';
 
 
 const config = {
@@ -30,9 +30,9 @@ class App extends Component {
   successLoggedUser = (user) => {
     this.setState({userLoaded : true });
     if(user != null){
-      this.props.login(user)
+      this.props.signIn(user)
     }else{
-      this.props.login({})
+      this.props.signIn({})
     }
   }
 
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (data) => dispatch(login(data))
+    signIn: (data) => dispatch(signIn(data))
   }
 }
 

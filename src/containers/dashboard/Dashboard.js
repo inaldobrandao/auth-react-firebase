@@ -4,10 +4,6 @@ import FirebaseAuthService from '../../services/FirebaseAuthService';
 
 class Dashboard extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     signOut = () =>{
         FirebaseAuthService.signOut(this.signOutSuccess);        
     }

@@ -27,6 +27,13 @@
   to { transform: rotate(360deg); }
 }
 
+.btn-submit {
+
+  .loading-send {
+    color: #fff;
+  }
+}
+
 .snackbar-success > div {
   background: #009688;
   border-radius: 15px;
